@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -25,9 +26,9 @@ public class NameListActivity extends AppCompatActivity {
 
     FirebaseFirestore firestore;
     RecyclerView recyclerView;
-    String batch,dept,sec,year,date;
+    String batch,dept,sec,year,date,sem,hr;
     List<AttendanceModelClass> nameList;
-    TextView dep,sect,hour;
+    TextView dep,sect,hour,semester;
     PutAttendanceAdapter adapter;
     List<Boolean> attendanceStatus;
     int firsttime=0;
@@ -43,6 +44,7 @@ public class NameListActivity extends AppCompatActivity {
         dep=findViewById(R.id.namelistdepartment);
         sect=findViewById(R.id.namelistsec);
         hour=findViewById(R.id.namelisthour);
+        semester=findViewById(R.id.namelistsem);
         sharedPreferences=this.getPreferences(MODE_PRIVATE);
         Intent intent=getIntent();
         batch=intent.getStringExtra("batch");
@@ -50,9 +52,12 @@ public class NameListActivity extends AppCompatActivity {
         sec=intent.getStringExtra("sec");
         year=intent.getStringExtra("year");
         date=intent.getStringExtra("date");
-        dep.setText(dept);
-        sect.setText(sec);
-        hour.setText(intent.getStringExtra("hour"));
+        sem=intent.getStringExtra("sem");
+        dep.setText("Department: "+dept);
+        sect.setText("Section: "+sec);
+        hr=intent.getStringExtra("hour");
+        hour.setText("Hour: "+hr);
+        semester.setText("Semester: "+sem);
         adapter=new PutAttendanceAdapter(this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(NameListActivity.this));
@@ -75,6 +80,7 @@ public class NameListActivity extends AppCompatActivity {
             @Override
             public void onSuccess(QuerySnapshot querySnapshot) {
                 nameList=new ArrayList<>();
+                attendanceStatus=new ArrayList<>();
                 for(QueryDocumentSnapshot documentSnapshot:querySnapshot){
                     AttendanceModelClass modelClass=documentSnapshot.toObject(AttendanceModelClass.class);
                     modelClass.setRegNo(documentSnapshot.getId());
@@ -97,27 +103,20 @@ public class NameListActivity extends AppCompatActivity {
             firsttime++;
             for (int i = 0; i <nameList.size();i++){
                 AttendanceModelClass modelClass=nameList.get(i);
-                Map<String ,String > attendance=new HashMap<>();
-                attendance.put("h"+hour.getText().toString(), String.valueOf(attendanceStatus.get(i)));
-                attendance.put("h2", " ");
-                attendance.put("h3", " ");
-                attendance.put("h4", " ");
-                attendance.put("h5", " ");
-                attendance.put("h6", " ");
-                attendance.put("h7", " ");
-                firestore.collection(date).document(modelClass.getRegNo()).set(attendance).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.i("addwd sucessfully","doneee");
-                    }
-                });
+               AttendanceModelClass attendance=new AttendanceModelClass(modelClass.getName(),
+                       modelClass.getSec(),sem,dept,year,String.valueOf(attendanceStatus.get(i)),
+                       " "," "," "," "," "," ");
+               firestore.collection(date).document(modelClass.getRegNo()).set(attendance);
+               Log.i("heyyy first time","ueeeee");
+                Toast.makeText(this, "Attendance Uploaded", Toast.LENGTH_SHORT).show();
             }
         }
         else{
             for (int i = 0; i <nameList.size();i++) {
-                Map<String,Object> attendance=new HashMap<>();
-                attendance.put("h"+hour.getText().toString(), String.valueOf(attendanceStatus.get(i)));
-                firestore.collection(date).document().update(attendance);
+                AttendanceModelClass modelClass = nameList.get(i);
+                String h = "h" + hr;
+                firestore.collection(date).document(modelClass.getRegNo()).update(h, String.valueOf(attendanceStatus.get(i)));
+                Toast.makeText(this, "Attendance Updated", Toast.LENGTH_SHORT).show();
             }
         }
     }
