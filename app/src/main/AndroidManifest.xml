@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AttendanceV1">
-        <activity android:name=".NameListActivity"></activity>
+        <activity android:name=".ChecKAttendanceActivity"></activity>
+        <activity android:name=".NameListActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

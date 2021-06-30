@@ -107,4 +107,13 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
 
     }
+
+    public void check(View view) {
+        Intent intent=new Intent(getApplicationContext(),ChecKAttendanceActivity.class);
+        intent.putExtra("year",year);
+        intent.putExtra("dep",dept.getText().toString());
+        intent.putExtra("sec",sec.getText().toString());
+        intent.putExtra("date",date.getText().toString());
+        startActivity(intent);
+    }
 }
