@@ -9,9 +9,44 @@ public class AttendanceModelClass {
     String regNo;
     String h1,h2,h3,h4,h5,h6,h7;
     String sem,year;
+    long phno,rolno,regno;
+
+    public long getRegno() {
+        return regno;
+    }
+
+    public void setRegno(long regno) {
+        this.regno = regno;
+    }
+
+    public AttendanceModelClass(String name, String dep, String sec, long phno, long regno) {
+        this.name = name;
+        this.dep = dep;
+        this.sec = sec;
+        this.phno = phno;
+        this.regno = regno;
+    }
+
+    public long getPhno() {
+        return phno;
+    }
+
+    public void setPhno(long phno) {
+        this.phno = phno;
+    }
+
+    public long getRolno() {
+        return rolno;
+    }
+
+    public void setRolno(long rolno) {
+        this.rolno = rolno;
+    }
 
     public AttendanceModelClass() {
     }
+
+
 
     public AttendanceModelClass(String name, String dep, String sec) {
         this.name = name;
@@ -35,7 +70,7 @@ public class AttendanceModelClass {
         this.year = year;
     }
 
-    public AttendanceModelClass(String name, String sec, String sem, String dep, String year, String h1, String h2, String h3, String h4, String h5, String h6, String h7) {
+    public AttendanceModelClass(long regno,long phno,String name, String sec, String sem, String dep, String year, String h1, String h2, String h3, String h4, String h5, String h6, String h7) {
         this.h1 = h1;
         this.h2 = h2;
         this.h3 = h3;
@@ -48,6 +83,8 @@ public class AttendanceModelClass {
         this.sem=sem;
         this.dep=dep;
         this.year=year;
+        this.regno=regno;
+        this.phno=phno;
     }
 
     public String getH1() {
@@ -130,12 +167,4 @@ public class AttendanceModelClass {
         this.sec = sec;
     }
 
-    @Exclude
-    public String getRegNo() {
-        return regNo;
-    }
-
-    public void setRegNo(String regNo) {
-        this.regNo = regNo;
-    }
 }
