@@ -103,7 +103,8 @@ public class NameListActivity extends AppCompatActivity {
 //
 //            }
 //        });
-        reference.addValueEventListener(new ValueEventListener() {
+        reference
+                .addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 nameList=new ArrayList<>();
